@@ -1,54 +1,85 @@
-#include <avr/io.h>
-#define F_CPU 8000000
-#include <util/delay.h>
-#include "classTimer.h"
+#include "Classtimer.h"
 
-void ajustementPwm( uint16_t dureeA , uint16_t dureeB) {
+void Timers::PartirCompteur(){
 
-    // mise à un des sorties OC1A et OC1B sur comparaison
-    // mise à un des sorties OC1A et OC1B sur comparaison
-
-    // réussie en mode PWM 8 bits, phase correcte
-
-    // et valeur de TOP fixe à 0xFF (mode #1 de la table 16-5
-
-    // page 130 de la description technique du ATmega324PA)
-
-    OCR1A = dureeA;
-
-    OCR1B = dureeB;
-
-
-    // division d'horloge par 8 - implique une fréquence de PWM fixe
-
-    TCCR1A |= (1 << COM1A0) | (1 << COM1B0) | (1 << WGM10); //| (1 << COM1A0) | (1 << COM1B0) ;
-
-    TCCR1B |= (1 << CS11) ;
-
-    TCCR1C = 0;
+    //switch (leType) {
+    //case TIMER0:
+    //    TCCR0B |= (1 << CS02) | (1 << CS00); // p.104 prescaler 1/1024
+    //    break;
+    //case TIMER1:
+    //    TCCR1B |= (1 << CS12) | (1 << CS10);
+    //    break;
+    //case TIMER2:
+    //    TCCR2B |= (1 << CS22) | (1 << CS20);
+    //    break;
+    //}
+    switch (leType) {
+    case TIMER0:
+        TCCR0B |= prescaler; //partir compteur en activant le prescaler (ChoisirPrescaler)
+        break;
+    case TIMER1:
+        TCCR1B |= prescaler;
+        break;
+    case TIMER2:
+        TCCR2B |= prescaler;
+        break;
+    }
 }
 
 
-void partirMinuterie(uint16_t duree)  //il faut qu'il soit capable de choisir un prescaler
-{
+void Timers::ArretCompteur() {
 
-    gMinuterieExpiree = 0;
-
-    // mode CTC du timer 1 avec horloge divisée par 1024
-
-    // interruption après la durée spécifiée
-
-    TCNT1 = 0;
-
-    OCR1A = duree;
-
-    TCCR1A = 0;
-
-    TCCR1B = (1 << WGM12) | (1 << CS12) | (1 << CS10); // ctc prescaler 1024
-
-    TCCR1C = 0;
-
-    TIMSK1 = (1 << OCIE1A);
+    switch (leType) {
+    case TIMER0:
+        TCCR0B &= ~((1 << CS02) | (1 << CS01) | (1 << CS00)); //tous bits a 0 = desactive prescaler
+        break;
+    case TIMER1:
+        TCCR1B &= ~((1 << CS12) | (1 << CS11) | (1 << CS10));
+        break;
+    case TIMER2:
+        TCCR2B &= ~((1 << CS22) | (1 << CS21) | (1 << CS20));
+        break;
+    }
 }
 
-// choisir un prescaler :
+
+void Timers::DutyCylcle(int pourcentage){
+
+    //jsp si c necessaire:
+    //if (pourcentage < 0) pourcentage = 0; //empeche negatif
+    //if (pourcentage > 100) pourcentage = 100; //empeche plus de 100% (debordement d e255)
+
+    uint8t valeurOCR = (pourcentage / 100.0) * 255; 
+
+    switch (leType) {
+    case TIMER0:
+        OCR0A = valeurOCR; // OCRxA -> durée du signal haut (duty cycle)
+        break;
+    case TIMER1:
+        OCR1A = valeurOCR;
+        break;
+    case TIMER2:
+        OCR2A = valeurOCR;
+        break;
+    }
+
+}
+
+
+void Timers::ConfigurationCTC() { //mode ctc -> bit WGMx1 = 1 et OCRxA = valeurCtc
+
+    switch (leType) {
+    case TIMER0:
+        TCCR0A |= (1 << WGM01);
+        OCR0A = valeurCtc;
+        break;
+    case TIMER1: // 16 bits
+        TCCR1B |= (1 << WGM12);
+        OCR1A = valeurCtc;
+        break;
+    case TIMER2:
+        TCCR2A |= (1 << WGM21);
+        OCR2A = valeurCtc;
+        break;
+    }
+}

@@ -12,8 +12,8 @@ class Timers{
 
     Timers(TypeTimer type, ModeTimer mode, uint16_t valeurCtc=0, uint16_t prescaler =0){};
 
-    void Partircompteur();
-    void ArretCopmetur();
+    void PartirCompteur();
+    void ArretCompteur();
 
     void ChoisirPrescaler(int valeur); // valeur c'est 1024 ou 64 ou8 ou... et la méthode te donne ;es registres à utiliser 
     
