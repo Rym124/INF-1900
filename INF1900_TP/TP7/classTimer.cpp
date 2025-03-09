@@ -18,13 +18,13 @@ void Timers::PartirCompteur(){
     //}
     switch (leType) {
     case TIMER0:
-        TCCR0B |= prescaler; //partir compteur en activant le prescaler (ChoisirPrescaler)
+        TCCR0B |= prescaler_; //partir compteur en activant le prescaler (ChoisirPrescaler)
         break;
     case TIMER1:
-        TCCR1B |= prescaler;
+        TCCR1B |= prescaler_;
         break;
     case TIMER2:
-        TCCR2B |= prescaler;
+        TCCR2B |= prescaler_;
         break;
     }
 }
