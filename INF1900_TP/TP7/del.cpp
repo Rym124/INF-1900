@@ -12,7 +12,9 @@ DEL::DEL(uint8_t bornePositive, uint8_t borneNegative, volatile uint8_t* ddr, vo
     *ddr |= (1 << bornePositive_) | (1 << borneNegative_);
 }
 
-DEL::DEL() : bornePositive_(PB3), borneNegative_(PB4), port_(&PORTB), ddr_(&DDRB) {}
+DEL::DEL() : bornePositive_(PB3), borneNegative_(PB4), port_(&PORTB), ddr_(&DDRB) {
+    *ddr |= (1 << bornePositive_) | (1 << borneNegative_);
+}
 
 void DEL::allumerRouge() {
     *port_ |= (1 << bornePositive_);
