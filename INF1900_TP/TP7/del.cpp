@@ -9,11 +9,11 @@ void delaiMS(uint16_t delai) {
 DEL::DEL(uint8_t bornePositive, uint8_t borneNegative, volatile uint8_t* ddr, volatile uint8_t* port) : 
     bornePositive_(bornePositive), borneNegative_(borneNegative), port_(port), ddr_(ddr) {
 
-    *ddr |= (1 << bornePositive_) | (1 << borneNegative_);
+    *ddr_ |= (1 << bornePositive_) | (1 << borneNegative_);
 }
 
 DEL::DEL() : bornePositive_(PB3), borneNegative_(PB4), port_(&PORTB), ddr_(&DDRB) {
-    *ddr |= (1 << bornePositive_) | (1 << borneNegative_);
+    *ddr_ |= (1 << bornePositive_) | (1 << borneNegative_);
 }
 
 void DEL::allumerRouge() {
