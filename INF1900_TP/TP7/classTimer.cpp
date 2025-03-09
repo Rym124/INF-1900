@@ -3,7 +3,7 @@
 #include <util/delay.h>
 #include "classTimer.h"
 
-//Rym
+
 Timers::Timers(TypeTimer type, ModeTimer mode, uint16_t valeurCtc, uint16_t prescaler)
     : leType_(type), leMode_(mode), valeurCtc_(valeuCtc) {
     prescaler_= gChoisirPrescaler(prescaler);
@@ -21,10 +21,10 @@ Timers::Timers(TypeTimer type, ModeTimer mode, uint16_t valeurCtc, uint16_t pres
     // }
 } 
 
-//Marily
+
 void Timers::PartirCompteur(){
 
-    switch (leType) {
+    switch (leType_) {
     case TIMER0:
         TCCR0B |= prescaler_; //partir compteur en activant le prescaler (ChoisirPrescaler)
         break;
@@ -40,7 +40,7 @@ void Timers::PartirCompteur(){
 
 void Timers::ArretCompteur() {
 
-    switch (leType) {
+    switch (leType_) {
     case TIMER0:
         TCCR0B &= ~((1 << CS02) | (1 << CS01) | (1 << CS00)); //tous bits a 0 = desactive prescaler
         //TIMSK0 = 0;
@@ -56,7 +56,7 @@ void Timers::ArretCompteur() {
     }
 }
 
-//Rym
+
 uint16_t Timers:: ChoisirPrescaler(uint16_t valeur){ //page 131 
     switch (leType_)
     {
@@ -90,7 +90,7 @@ uint16_t Timers:: ChoisirPrescaler(uint16_t valeur){ //page 131
     return 0;
 }
 
-//Marily
+
 void Timers::DutyCylcle(int pourcentage){
 
     //jsp si c necessaire:
@@ -99,7 +99,7 @@ void Timers::DutyCylcle(int pourcentage){
 
     uint8t valeurOCR = (pourcentage / 100.0) * 255; 
 
-    switch (leType) {
+    switch (leType_) {
     case TIMER0:
         OCR0A = valeurOCR; // duty cycle pwm
         break;
@@ -113,7 +113,7 @@ void Timers::DutyCylcle(int pourcentage){
 
 }
 
-//Rym
+
 void Timers::ajustementPwm( uint8_t dureeA , uint8_t dureeB) {
 
     OCR1A = (dureeA / 100.0) * 255; // gauche
@@ -139,10 +139,10 @@ void Timers::configurationPWM(){ //130
     }
 }
 
-//Marily
+
 void Timers::ConfigurationCTC() { //mode ctc -> bit WGMx1 = 1 et OCRxA = valeurCtc
 
-    switch (leType) {
+    switch (leType_) {
     case TIMER0:
         TCCR0A = 0; //reinitialisation
         TCCR0A |= (1 << WGM01);
