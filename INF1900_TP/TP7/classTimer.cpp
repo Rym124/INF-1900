@@ -101,7 +101,7 @@ void Timers::DutyCylcle(int pourcentage){
 
     switch (leType) {
     case TIMER0:
-        OCR0A = valeurOCR; // OCRxA -> durée du signal haut (duty cycle)
+        OCR0A = valeurOCR; // duty cycle pwm
         break;
     case TIMER1:
         OCR1A = valeurOCR;
@@ -144,14 +144,17 @@ void Timers::ConfigurationCTC() { //mode ctc -> bit WGMx1 = 1 et OCRxA = valeurC
 
     switch (leType) {
     case TIMER0:
+        TCCR0A = 0; //reinitialisation
         TCCR0A |= (1 << WGM01);
         OCR0A = valeurCtc;
         break;
     case TIMER1: // 16 bits
+        TCCR1B = 0; 
         TCCR1B |= (1 << WGM12);
         OCR1A = valeurCtc;
         break;
     case TIMER2:
+        TCCR2A = 0; 
         TCCR2A |= (1 << WGM21);
         OCR2A = valeurCtc;
         break;
