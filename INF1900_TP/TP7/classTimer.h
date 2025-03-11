@@ -24,10 +24,10 @@ class Timers{
 
     private:
     ///uint16t valeurNormal; on fini et on rajoute le normal ok!
-    TypeTimer leType;
-    ModeTimer leMode;
-    uint16t valeurCtc; //valeur de compara
-    uint16t prescaler;
+    TypeTimer leType_;
+    ModeTimer leMode_;
+    uint16_t valeurCtc_; //valeur de compara
+    uint16_t prescaler_;
 
 
     void configurationPWM(); //pas accesible 
