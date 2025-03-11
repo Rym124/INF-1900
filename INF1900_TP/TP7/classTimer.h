@@ -1,4 +1,4 @@
-#include <avr/io.h>
+d#include <avr/io.h>
 
 #ifndef CLASSTIMER_H
 #define CLASSTIMER_H
@@ -21,6 +21,9 @@ class Timers{
     void dutyCycle(uint16_t ,uint16_t ); // pour le PWM, ici on return les registres dependamment du timer
     void ajustementPwm( uint8_t  , uint8_t );
     uint16_t calculPourcentage(uint16_t  , uint16_t );
+    TypeTimer getType(){
+        return leType_;
+    }
 
     private:
     ///uint16t valeurNormal; on fini et on rajoute le normal ok!
