@@ -7,17 +7,13 @@ public:
     // Construit un gestionnaire de DEL avec les ports demandés
     DEL(uint8_t bornePositive, uint8_t borneNegative, volatile uint8_t* ddr, volatile uint8_t* port);
     
-    // Construit un gestionnaire de DEL avec les ports PB3 (+) et PB4 (-)
+    // Construit un gestionnaire de DEL avec les ports PB1 (+) et PB0 (-)
     DEL();
 
     void allumerRouge();
     void allumerVert();
     void allumerAmbre();
 
-    // Allumer la DEL en ambre en utilisant le Timer0 (OC0A et OC0B)
-    void allumerAmbreT();
-
-    bool utiliseTimer0();
     void eteindre();
     
 
@@ -38,5 +34,5 @@ private:
     volatile uint8_t* port_, * ddr_;
 
     const static uint8_t DELAI_AMBRE_MS = 5;
-    const static uint8_t FREQUENCE_CLIGNOTEMENT_HZ = 2;
+    const static uint8_t FREQUENCE_CLIGNOTEMENT_HZ = 1;
 };

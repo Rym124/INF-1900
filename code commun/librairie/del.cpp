@@ -9,10 +9,10 @@ void delaiMS(uint16_t delai) {
 DEL::DEL(uint8_t bornePositive, uint8_t borneNegative, volatile uint8_t* ddr, volatile uint8_t* port) : 
     bornePositive_(bornePositive), borneNegative_(borneNegative), port_(port), ddr_(ddr) {
 
-    *ddr_ |= (1 << bornePositive_) | (1 << borneNegative_);
+    *ddr |= (1 << bornePositive_) | (1 << borneNegative_);
 }
 
-DEL::DEL() : bornePositive_(PB3), borneNegative_(PB4), port_(&PORTB), ddr_(&DDRB) {
+DEL::DEL() : bornePositive_(PB1), borneNegative_(PB0), port_(&PORTB), ddr_(&DDRB) {
     *ddr_ |= (1 << bornePositive_) | (1 << borneNegative_);
 }
 
@@ -31,23 +31,7 @@ void DEL::allumerAmbre() {
     allumerVert();
     _delay_ms(DELAI_AMBRE_MS);
 }
-bool DEL::utiliseTimer0() {
-    return {
-        // Vérifie si le compteur du Timer0 est en marche
-        ((TCCR0B & ((1 << CS02) | (1 << CS01) | (1 << CS00))) != 0x0) && 
-        // Vérfie si Timer0 utilise les OC0X
-        ((TCCR0A & ((1 << COM0A0) | (1 << COM0A1) | (1 << COM0B0) | (1 << COM0B1))) != 0x0) && 
-        // Vérifie si les bornes sont à PB3 et PB4
-        ((borneNegative_ == PB4 || borneNegative_ == PB3) && (bornePositive_ == PB4 || bornePositive_ == PB3)) &&
-        port_ == &PORTB
-    };
-}
 void DEL::eteindre() {
-    if (utiliseTimer0()) {
-        TCCR0B &= ~((1 << CS00) | (1 << CS01) | (1 << CS02));
-        TCCR0A &= ~((1 << COM0A0) | (1 << COM0A1) | (1 << COM0B0) | (COM0B1));
-    }
-
     *port_ &= ~(1 << bornePositive_);
     *port_ &= ~(1 << borneNegative_);
 }
@@ -82,31 +66,4 @@ void DEL::clignoterRouge(uint8_t nombreFois, uint16_t frequence) {
         eteindre();
         delaiMS(periode_ms/2);
     }
-}
-
-// Utilise le Timer0 (Marche uniquement avec OC0A et OC0B)
-
-void DEL::allumerAmbreT() {
-    *port_ |= (1 << borneNegative_);
-    *port_ &= ~(1 << bornePositive_);
-
-    uint16_t prescaler = 1024;
-    uint16_t nombreCycleCpu = DELAI_AMBRE_MS * F_CPU / 1000;
-
-
-    TCNT0 = 0;
-
-    // Compare Output Mode: Toggle (OC0A et OC0B) et Mode d'opération: CTC
-    TCCR0A &= ~(1 << COM0A1);
-    TCCR0A |= (1 << COM0A0) | (1 << WGM01);
-    TCCR0A &= ~(1 << COM0B1);
-    TCCR0A |= (1 << COM0B0);
-
-    OCR0A = nombreCycleCpu / prescaler;
-    OCR0B = nombreCycleCpu / prescaler;
-
-    // Prescaler: 1024
-    TCCR0B |= (1 << CS02) | (1 << CS00);
-    TCCR0B &= ~(1 << CS01);
-
 }
