@@ -1,69 +1,104 @@
+/*###############   Auteurs  #####################
+########   TP7 et TP8 classe du Bouton    ########
+#####                                        #####
+#####        Produit et ecrit par:           #####
+0#####           Equipe 5556                 #####
+#####        Alexa Kassar (2350528)          #####
+#####        Jonathan Volcy (2383299)        #####
+#####       Rym Fortas (2385101)             #####
+#####        Marily  Lemire (2350146)        #####
+#####           INF1900 (groupe 03)          #####
+#####                2025                    #####
+##################################################
+
+
+############## Description #####################
+Fichier cpp: Classe "Del" pour l'utilisation et
+le fonctionnement de la Del*/
+
+#define CONVERSION 1000
+#define DEMI_PERIODE 2
+
 #include "del.h"
 
-void delaiMS(uint16_t delai) {
-    for(uint16_t i = 0; i < delai; i++) {
+void delaiMs(uint16_t delai) 
+{
+    for(uint16_t i = 0; i < delai; i++) 
+    {
         _delay_ms(1);
     }
 }
 
-DEL::DEL(uint8_t bornePositive, uint8_t borneNegative, volatile uint8_t* ddr, volatile uint8_t* port) : 
-    bornePositive_(bornePositive), borneNegative_(borneNegative), port_(port), ddr_(ddr) {
+Del::Del(uint8_t bornePositive, uint8_t borneNegative, volatile uint8_t* ddr, volatile uint8_t* port) : 
 
+    bornePositive_(bornePositive), borneNegative_(borneNegative), port_(port), ddr_(ddr) 
+{
     *ddr |= (1 << bornePositive_) | (1 << borneNegative_);
 }
 
-DEL::DEL() : bornePositive_(PB1), borneNegative_(PB0), port_(&PORTB), ddr_(&DDRB) {
+Del::Del() : bornePositive_(PB1), borneNegative_(PB0), port_(&PORTB), ddr_(&DDRB) 
+{
     *ddr_ |= (1 << bornePositive_) | (1 << borneNegative_);
 }
 
-void DEL::allumerRouge() {
+void Del::allumerRouge() 
+{
     *port_ |= (1 << bornePositive_);
     *port_ &= ~(1 << borneNegative_);
 }
-void DEL::allumerVert() {
 
+void Del::allumerVert() 
+{
     *port_ &= ~(1 << bornePositive_);
     *port_ |= (1 << borneNegative_);
 }
-void DEL::allumerAmbre() {
+
+void Del::allumerAmbre() 
+{
     allumerRouge();
     _delay_ms(DELAI_AMBRE_MS);
     allumerVert();
     _delay_ms(DELAI_AMBRE_MS);
 }
-void DEL::eteindre() {
+
+void Del::eteindre() 
+{
     *port_ &= ~(1 << bornePositive_);
     *port_ &= ~(1 << borneNegative_);
 }
 
-// Clignotement en fonction de la durée (fréquence fixe à 2 Hz)
-
-void DEL::clignoterVert(uint16_t dureeMs) {
-    uint16_t nombreFois = FREQUENCE_CLIGNOTEMENT_HZ * dureeMs / 1000;
+void Del::clignoterVert(uint16_t dureeMs) 
+{
+    uint16_t nombreFois = FREQUENCE_CLIGNOTEMENT_HZ * dureeMs / CONVERSION;
     clignoterVert(nombreFois, FREQUENCE_CLIGNOTEMENT_HZ);
 }
-void DEL::clignoterRouge(uint16_t dureeMs) {
-    uint16_t nombreFois = FREQUENCE_CLIGNOTEMENT_HZ * dureeMs / 1000;
+
+void Del::clignoterRouge(uint16_t dureeMs) 
+{
+    uint16_t nombreFois = FREQUENCE_CLIGNOTEMENT_HZ * dureeMs / CONVERSION;
     clignoterRouge(nombreFois, FREQUENCE_CLIGNOTEMENT_HZ);
 }
 
-// Clignotement en fonction du nombre et de la fréquence
-
-void DEL::clignoterVert(uint8_t nombreFois, uint16_t frequence){
-    uint16_t periode_ms = 1000 / frequence;
-    for (uint16_t i = 0; i < nombreFois; i++) {
+void Del::clignoterVert(uint8_t nombreFois, uint16_t frequence)
+{
+    uint16_t periode_ms = CONVERSION / frequence;
+    for (uint16_t i = 0; i < nombreFois; i++) 
+    {
         allumerVert();
-        delaiMS(periode_ms/2);
+        delaiMs(periode_ms/DEMI_PERIODE);
         eteindre();
-        delaiMS(periode_ms/2);
+        delaiMs(periode_ms/DEMI_PERIODE);
     }
 }
-void DEL::clignoterRouge(uint8_t nombreFois, uint16_t frequence) {
-    uint16_t periode_ms = 1000 / frequence;
-    for (uint8_t i = 0; i < nombreFois; i++) {
+
+void Del::clignoterRouge(uint8_t nombreFois, uint16_t frequence) 
+{
+    uint16_t periode_ms = CONVERSION / frequence;
+    for (uint8_t i = 0; i < nombreFois; i++) 
+    {
         allumerRouge();
-        delaiMS(periode_ms/2);
+        delaiMs(periode_ms/DEMI_PERIODE);
         eteindre();
-        delaiMS(periode_ms/2);
+        delaiMs(periode_ms/DEMI_PERIODE);
     }
 }

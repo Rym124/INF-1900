@@ -107,6 +107,7 @@ HEXTRG=$(HEXROMTRG) $(PROJECTNAME).ee.hex
 debug: CXXFLAGS += -DDEBUG -g
 debug: CCFLAGS += -DDEBUG -g
 debug: $(TRG)
+debug: 
 
 ####### Definition de tout les fichiers objets #######
 

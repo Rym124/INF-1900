@@ -1,3 +1,22 @@
+/*###############   Auteurs  #####################
+########   TP7 et TP8 classe du Bouton    ########
+#####                                        #####
+#####        Produit et ecrit par:           #####
+0#####           Equipe 5556                 #####
+#####        Alexa Kassar (2350528)          #####
+#####        Jonathan Volcy (2383299)        #####
+#####       Rym Fortas (2385101)             #####
+#####        Marily  Lemire (2350146)        #####
+#####           INF1900 (groupe 03)          #####
+#####                2025                    #####
+##################################################
+
+
+############## Description #####################
+Fichier cpp: Classe "Bouton" qui permet d'utiliser un bouton par 
+scrutation ou par interruption*/
+
+
 #include "bouton.h"
 
 Bouton::Bouton(uint8_t interruption, ModeDeclenchement mode) : interruption_(interruption), utiliseInterruption_(true)
@@ -6,18 +25,22 @@ Bouton::Bouton(uint8_t interruption, ModeDeclenchement mode) : interruption_(int
     switch (interruption)
     {
         case INT0:
-            if (mode == MONTANT) {
+            if (mode == MONTANT)
+            {
                 EICRA |= (1 << ISC01) | (1 << ISC00);
             }
-            else if (mode == DESCENDANT) {
+            else if (mode == DESCENDANT)
+            {
                 EICRA |= (1 << ISC01);
                 EICRA &= ~(1 << ISC00);
             }
-            else if (mode == FRONT) {
+            else if (mode == FRONT)
+            {
                 EICRA &= ~ (1 << ISC01);
                 EICRA |= (1 << ISC00);
             }
-            else if (mode == BAS) {
+            else if (mode == BAS) 
+            {
                 EICRA &= ~((1 << ISC00) | (1 << ISC01));
             }
 
@@ -27,21 +50,25 @@ Bouton::Bouton(uint8_t interruption, ModeDeclenchement mode) : interruption_(int
             break;
         
         case INT1:
-            if (mode == MONTANT) {
+            if (mode == MONTANT) 
+            {
                 EICRA |= (1 << ISC11) | (1 << ISC10);
             }
 
-            else if (mode == DESCENDANT) {
+            else if (mode == DESCENDANT) 
+            {
                 EICRA |= (1 << ISC11);
                 EICRA &= ~(1 << ISC10);
             }
 
-            else if (mode == FRONT) {
+            else if (mode == FRONT) 
+            {
                 EICRA &= ~(1 << ISC11);
                 EICRA |= (1 << ISC10);
             }
 
-            else if (mode == BAS) {
+            else if (mode == BAS) 
+            {
                 EICRA &= ~((1 << ISC11) | (1 << ISC10));
             }
 
@@ -51,21 +78,25 @@ Bouton::Bouton(uint8_t interruption, ModeDeclenchement mode) : interruption_(int
             break;
 
         case INT2:
-            if (mode == MONTANT) {
+            if (mode == MONTANT) 
+            {
                 EICRA |= (1 << ISC21) | (1 << ISC20);
             }
 
-            else if (mode == DESCENDANT) {
+            else if (mode == DESCENDANT) 
+            {
                 EICRA |= (1 << ISC21);
                 EICRA &= ~(1 << ISC20);
             }
 
-            else if (mode == FRONT) {
+            else if (mode == FRONT) 
+            {
                 EICRA &= ~ (1 << ISC21);
                 EICRA |= (1 << ISC20);
             }
 
-            else if (mode == BAS) {
+            else if (mode == BAS) 
+            {
                 EICRA &= ~((1 << ISC21) | (1 << ISC20));
             }
 
@@ -86,16 +117,19 @@ void Bouton::activerInterruption(ModeDeclenchement mode)
     switch (mode)
     {
         case FRONT:
-            attenteFront();
+           attendreFront();
             break;
+
         case MONTANT:
-            attenteFrontMontant();
+           attendreFrontMontant();
             break;
+
         case DESCENDANT:
-            attenteFrontDescendant();
+           attendreFrontDescendant();
             break;
+
         case BAS:
-            attenteBas();
+           attendreBas();
             break;
         
         default:
@@ -105,7 +139,8 @@ void Bouton::activerInterruption(ModeDeclenchement mode)
 
 void Bouton::desactiverInterruption() 
 {
-    if (utiliseInterruption_) {
+    if (utiliseInterruption_) 
+    {
         EIMSK &= ~(1 << interruption_);
         utiliseInterruption_ = false;
     }
@@ -115,19 +150,23 @@ bool Bouton::estAppuye()
 {
     _delay_ms(DELAI_ANTI_REBOND);
 
-    if(port_ == Port::A) {
+    if(port_ == Port::A) 
+    {
         return (PINA & (1 << pin_));
     }
 
-    else if(port_ == Port::B) {
+    else if(port_ == Port::B) 
+    {
         return (PINB & (1 << pin_));
     }
 
-    else if(port_ == Port::C) {
+    else if(port_ == Port::C) 
+    {
         return (PINC & (1 << pin_));
     }
 
-    else if(port_ == Port::D) {
+    else if(port_ == Port::D) 
+    {
         return (PIND & (1 << pin_));
     }
 
@@ -135,7 +174,8 @@ bool Bouton::estAppuye()
 }
 
 
-void Bouton::attenteFront() {
+void Bouton::attendreFront() 
+{
     switch (interruption_)
     {
         case INT0:
@@ -161,8 +201,11 @@ void Bouton::attenteFront() {
     }
 }
 
-void Bouton::attenteFrontMontant() {
-    switch(interruption_) {
+void Bouton::attendreFrontMontant() 
+{
+    switch(interruption_) 
+    {
+
         case INT0:
             EIMSK &= ~(1 << INT0);
             EICRA |= (1 << ISC01) | (1 << ISC00);
@@ -183,8 +226,10 @@ void Bouton::attenteFrontMontant() {
     }
 }
 
-void Bouton::attenteFrontDescendant() {
-    switch (interruption_) {
+void Bouton::attendreFrontDescendant() 
+{
+    switch (interruption_) 
+    {
         case INT0:
             EIMSK &= ~(1 << INT0);
             EICRA |= (1 << ISC01);
@@ -208,7 +253,8 @@ void Bouton::attenteFrontDescendant() {
     }
 }
 
-void Bouton::attenteBas() {
+void Bouton::attendreBas() 
+{
     switch (interruption_)
     {
         case INT0:
