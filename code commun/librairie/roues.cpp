@@ -23,48 +23,42 @@ et l'utilisation des roues */
 #include "roues.h"
 
 
-Roues:: Roues( Minuterie2 minuterie, uint16_t vitesseDroite, uint16_t vitesseGauche) : minuterie_(minuterie), vitesseDroite_(0), vitesseGauche_(0){};
+Roues:: Roues( Minuterie2 minuterie) : minuterie_(minuterie){};
 
 
-void Roues::avancer(Minuterie2 laMinuterie,  uint16_t vitesseDroite, uint16_t vitesseGauche)
+void Roues::avancer(uint16_t vitesseDroite, uint16_t vitesseGauche)
 {
-    configurerMinuterie2();
+    minuterie_.configurerMinuterie2();
     avancerPorts();
-    laMinuterie.ajusterPwm(vitesseDroite, vitesseGauche);
+    minuterie_.ajusterPwm(vitesseDroite, vitesseGauche);
 }
 
-void Roues::reculer(Minuterie2 laMinuterie,  uint16_t vitesseDroite, uint16_t vitesseGauche)
+void Roues::reculer(uint16_t vitesseDroite, uint16_t vitesseGauche)
 {
-    configurerMinuterie2();
+    minuterie_.configurerMinuterie2();
     reculerPorts();
-    laMinuterie.ajusterPwm(vitesseDroite, vitesseGauche);
+    minuterie_.ajusterPwm(vitesseDroite, vitesseGauche);
 }
 
-void Roues::tournerDroite(Minuterie2 laMinuterie, uint16_t vitesseGauche)
+void Roues::tournerDroite( uint16_t vitesseGauche)
 {
-    configurerMinuterie2();
+    minuterie_.configurerMinuterie2();
     avancerPorts();
-    laMinuterie.ajusterPwm(0, vitesseGauche);
+    minuterie_.ajusterPwm(0, vitesseGauche);
 }
 
-void Roues::tournerGauche(Minuterie2 laMinuterie, uint16_t vitesseDroite)
+void Roues::tournerGauche( uint16_t vitesseDroite)
 {
-    configurerMinuterie2();
+    minuterie_.configurerMinuterie2();
     avancerPorts();
-    laMinuterie.ajusterPwm(vitesseDroite,0);
+    minuterie_.ajusterPwm(vitesseDroite,0);
 }
 
-void Roues::arreter(Minuterie2 laMinuterie)
+void Roues::arreter()
 {
-    configurerMinuterie2();
-    laMinuterie.ajusterPwm(0, 0);
+    minuterie_.configurerMinuterie2();
+    minuterie_.ajusterPwm(0, 0);
 }
-
-void Roues:: configurerMinuterie2()
-{
-    DDRD |=(1 << PD7)|(1 << PD6)| (1 << PD4) | (1 << PD5);
-}
-
 
 void Roues::reculerPorts()
 {
