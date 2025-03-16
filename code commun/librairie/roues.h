@@ -34,7 +34,6 @@ public:
     void arreter();
     void avancerPorts();
     void reculerPorts();
-    void configurerMinuterie2();
 
 private:
 
