@@ -25,82 +25,19 @@ Bouton::Bouton(uint8_t interruption, ModeDeclenchement mode) : interruption_(int
     switch (interruption)
     {
         case INT0:
-            if (mode == MONTANT)
-            {
-                EICRA |= (1 << ISC01) | (1 << ISC00);
-            }
-            else if (mode == DESCENDANT)
-            {
-                EICRA |= (1 << ISC01);
-                EICRA &= ~(1 << ISC00);
-            }
-            else if (mode == FRONT)
-            {
-                EICRA &= ~ (1 << ISC01);
-                EICRA |= (1 << ISC00);
-            }
-            else if (mode == BAS) 
-            {
-                EICRA &= ~((1 << ISC00) | (1 << ISC01));
-            }
-
-            EIMSK |= (1 << INT0);
+            activerInterruption(mode);
             port_ = Port::D;
             pin_ = PD2;
             break;
         
         case INT1:
-            if (mode == MONTANT) 
-            {
-                EICRA |= (1 << ISC11) | (1 << ISC10);
-            }
-
-            else if (mode == DESCENDANT) 
-            {
-                EICRA |= (1 << ISC11);
-                EICRA &= ~(1 << ISC10);
-            }
-
-            else if (mode == FRONT) 
-            {
-                EICRA &= ~(1 << ISC11);
-                EICRA |= (1 << ISC10);
-            }
-
-            else if (mode == BAS) 
-            {
-                EICRA &= ~((1 << ISC11) | (1 << ISC10));
-            }
-
-            EIMSK |= (1 << INT1);
+            activerInterruption(mode);
             port_ = Port::D;
             pin_ = PD3;
             break;
 
         case INT2:
-            if (mode == MONTANT) 
-            {
-                EICRA |= (1 << ISC21) | (1 << ISC20);
-            }
-
-            else if (mode == DESCENDANT) 
-            {
-                EICRA |= (1 << ISC21);
-                EICRA &= ~(1 << ISC20);
-            }
-
-            else if (mode == FRONT) 
-            {
-                EICRA &= ~ (1 << ISC21);
-                EICRA |= (1 << ISC20);
-            }
-
-            else if (mode == BAS) 
-            {
-                EICRA &= ~((1 << ISC21) | (1 << ISC20));
-            }
-
-            EIMSK |= (1 << INT2);
+            activerInterruption(mode);
             port_ = Port::B;
             pin_ = PB2;
             break;

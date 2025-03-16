@@ -26,5 +26,5 @@ $(TARGET): $(OBJDEP)
 .PHONY: clean
 
 clean:
-	rm -f *.o *.a
+	rm -f *.o *.a *.d
 

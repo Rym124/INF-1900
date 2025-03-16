@@ -30,7 +30,7 @@ PROJECTNAME=test2
 # Utilisez le suffixe .cpp pour les fichiers C++
 # Listez tous les fichiers a compiler, separes par
 # un espace. exemple: 'tp1.c tp2.cpp':
-PRJSRC= test.cpp 
+PRJSRC= timer.cpp 
 
 # Inclusions additionnels (ex: -I/path/to/mydir)
 INC= -I../librairie
@@ -104,10 +104,6 @@ TRG=$(PROJECTNAME).elf
 HEXROMTRG=$(PROJECTNAME).hex
 HEXTRG=$(HEXROMTRG) $(PROJECTNAME).ee.hex
  
-debug: CXXFLAGS += -DDEBUG -g
-debug: CCFLAGS += -DDEBUG -g
-debug: $(TRG)
-debug: 
 
 ####### Definition de tout les fichiers objets #######
 
@@ -128,11 +124,16 @@ OBJDEPS=$(CFILES:.c=.o) \
 # En plus de la commande make qui permet de compiler
 # votre projet, vous pouvez utilisez les commandes
 # make all, make install et make clean
-.PHONY: all install clean
+.PHONY: all install clean debug
 
 # Make all permet simplement de compiler le projet
 #
 all: $(TRG) $(HEXROMTRG)
+
+debug: CXXFLAGS += -DDEBUG -g
+debug: CCFLAGS += -DDEBUG -g
+debug: $(TRG)
+debug: 
 
 # Implementation de la cible
 $(TRG): $(OBJDEPS)

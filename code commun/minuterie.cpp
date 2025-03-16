@@ -56,6 +56,8 @@ TypeMinuterie Minuterie::accederType()
     return leType_;
 }
 
+ 
+
 uint16_t Minuterie::choisirPrescaler(uint16_t valeur)
 { 
     switch (leType_)

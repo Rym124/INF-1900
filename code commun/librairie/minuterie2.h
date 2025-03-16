@@ -13,36 +13,42 @@
 
 
 ############## Description #####################
-Fichier h: Déclaration de la classe "Roues" et des méthodes 
+Fichier h: Déclaration de la classe "Minuterie2" et de ses méethodes 
 pour la configuration et l'utilisation des minutries */ 
- 
-#ifndef CLASSE_ROUES
-#define CLASSE_ROUES
 
-#include "minuterie2.h"
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include "enum.h"
 
-class Roues
+#ifndef MINUTERIE2_H
+#define MINUTERIE2_H
+
+
+enum class ModeMinuterie2 {CTC, PWM};
+
+class Minuterie2
 {
 public:
+    
 
-    Roues( Minuterie2 letimer, uint16_t vitesseD,uint16_t vitesseG);
+    Minuterie2(ModeMinuterie2 mode, uint16_t valeurCtc=0, uint16_t prescaler =0);
 
-    void avancer(Minuterie2, uint16_t, uint16_t);
-    void reculer(Minuterie2 , uint16_t, uint16_t);
-    void tournerDroite(Minuterie2 , uint16_t);
-    void tournerGauche(Minuterie2, uint16_t);
-    void arreter(Minuterie2);
-    void avancerPorts();
-    void reculerPorts();
-    void configurerMinuterie2();
-
+    void partirCompteur();
+    void arreterCompteur();
+    uint16_t choisirPrescaler(uint16_t ); 
+    void comparerSortiesRegistres(uint16_t ,uint16_t ); 
+    void ajusterPwm( uint8_t  , uint8_t );
+    void activerInterruption();
+    
+   
 private:
-
-    Minuterie2 minuterie_;
-    uint16_t vitesseDroite_;
-    uint16_t vitesseGauche_;
-
+    
+    ModeMinuterie2 leMode_;
+    uint16_t valeurCtc_;
+    uint16_t prescaler_;
+    void configurerPwm(); 
+    void configurerCtc();
+  
 };
-
 
 #endif

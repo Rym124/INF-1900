@@ -13,36 +13,34 @@
 
 
 ############## Description #####################
-Fichier h: Déclaration de la classe "Roues" et des méthodes 
+Fichier h: Déclaration de la classe "Minuterie1" et de ses méthodes 
 pour la configuration et l'utilisation des minutries */ 
- 
-#ifndef CLASSE_ROUES
-#define CLASSE_ROUES
 
-#include "minuterie2.h"
+#include <avr/io.h>
+#include <avr/interrupt.h>
 
-class Roues
+#ifndef MINUTERIE1_H
+#define MINUTERIE1_H
+
+
+
+
+class Minuterie1
 {
 public:
 
-    Roues( Minuterie2 letimer, uint16_t vitesseD,uint16_t vitesseG);
-
-    void avancer(Minuterie2, uint16_t, uint16_t);
-    void reculer(Minuterie2 , uint16_t, uint16_t);
-    void tournerDroite(Minuterie2 , uint16_t);
-    void tournerGauche(Minuterie2, uint16_t);
-    void arreter(Minuterie2);
-    void avancerPorts();
-    void reculerPorts();
-    void configurerMinuterie2();
-
+    Minuterie1(uint16_t valeurCtc=0, uint16_t prescaler =0);
+    void partirCompteur();
+    void arreterCompteur();
+    uint16_t choisirPrescaler(uint16_t ); 
+    void comparerSortiesRegistres(uint16_t ); 
+    void activerInterruption();
+   
 private:
-
-    Minuterie2 minuterie_;
-    uint16_t vitesseDroite_;
-    uint16_t vitesseGauche_;
-
+    uint16_t valeurCtc_;
+    uint16_t prescaler_;
+    void configurerCtc();
+  
 };
-
 
 #endif
