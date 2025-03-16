@@ -25,13 +25,13 @@ class Roues
 {
 public:
 
-    Roues( Minuterie2 letimer, uint16_t vitesseD,uint16_t vitesseG);
+    Roues( Minuterie2 letimer);
 
-    void avancer(Minuterie2, uint16_t, uint16_t);
-    void reculer(Minuterie2 , uint16_t, uint16_t);
-    void tournerDroite(Minuterie2 , uint16_t);
-    void tournerGauche(Minuterie2, uint16_t);
-    void arreter(Minuterie2);
+    void avancer( uint16_t, uint16_t);
+    void reculer(uint16_t, uint16_t);
+    void tournerDroite(uint16_t);
+    void tournerGauche(uint16_t);
+    void arreter();
     void avancerPorts();
     void reculerPorts();
     void configurerMinuterie2();
@@ -39,9 +39,6 @@ public:
 private:
 
     Minuterie2 minuterie_;
-    uint16_t vitesseDroite_;
-    uint16_t vitesseGauche_;
-
 };
 
 
