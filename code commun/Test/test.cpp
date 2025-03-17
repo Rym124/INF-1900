@@ -42,7 +42,7 @@ de notre librairie*/
 #include "memoire_24.h"
 #include "del.h"
 #include "bouton.h"
-#include "minuterie.h"
+#include "minuterie2.h"
 #include "roues.h"
 #include "debug.h"
 
@@ -75,8 +75,8 @@ int main()
    _delay_ms(DELAI5);
 
     TransmissionUart uart;
-    Minuterie laMinuterie (MINUTERIE0, PWM,0,PRESCALER);
-    Roues leMoteur(laMinuterie,0,0);
+    Minuterie2 laMinuterie(ModeMinuterie2::PWM, 0, PRESCALER);;
+    Roues leMoteur(laMinuterie);
     Del del;
     Bouton boutonD2(INT0);
     Memoire24CXXX memoire;
@@ -89,25 +89,25 @@ int main()
     memoire.lecture(adresse, donneeLu, LONGUEUR );
     uart.transmettreString(donneeLu);
 
-    leMoteur.avancer(laMinuterie,VITESSE,VITESSE);
+    leMoteur.avancer(VITESSE,VITESSE);
     _delay_ms(DELAI4000);
 
-    leMoteur.reculer(laMinuterie, laMinuterie.convertirPourcentage(POURCENTAGE75,VALEUR_MAX), laMinuterie.convertirPourcentage(85,255));
+    leMoteur.reculer(laMinuterie.convertirPourcentage(POURCENTAGE75,VALEUR_MAX), laMinuterie.convertirPourcentage(POURCENTAGE75,VALEUR_MAX));
     _delay_ms(DELAI2000);
 
-    leMoteur.arreter(laMinuterie);
+    leMoteur.arreter();
     _delay_ms(DELAI2000);
 
-    leMoteur.tournerDroite(laMinuterie,laMinuterie.convertirPourcentage(POUCENTAGE50,VALEUR_MAX));
+    leMoteur.tournerDroite(laMinuterie.convertirPourcentage(POUCENTAGE50,VALEUR_MAX));
     _delay_ms(DELAI2000);
 
-    leMoteur.arreter(laMinuterie);
+    leMoteur.arreter();
     _delay_ms(DELAI4000);
 
-    leMoteur.tournerGauche(laMinuterie, laMinuterie.convertirPourcentage(POUCENTAGE50 ,VALEUR_MAX));
+    leMoteur.tournerGauche(laMinuterie.convertirPourcentage(POUCENTAGE50 ,VALEUR_MAX));
     _delay_ms(DELAI4000);
 
-    leMoteur.arreter(laMinuterie);
+    leMoteur.arreter();
 
     while (true) 
     {
