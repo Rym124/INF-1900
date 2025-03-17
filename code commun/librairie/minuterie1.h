@@ -23,8 +23,6 @@ pour la configuration et l'utilisation des minutries */
 #define MINUTERIE1_H
 
 
-
-
 class Minuterie1
 {
 public:
@@ -35,6 +33,7 @@ public:
     uint16_t choisirPrescaler(uint16_t ); 
     void comparerSortiesRegistres(uint16_t ); 
     void activerInterruption();
+    uint16_t convertirPourcentage(uint16_t pourcentage, uint16_t valeurMax);
    
 private:
     uint16_t valeurCtc_;
