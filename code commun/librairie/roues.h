@@ -34,10 +34,12 @@ public:
     void arreter();
     void avancerPorts();
     void reculerPorts();
+    
 
 private:
 
     Minuterie2 minuterie_;
+    
 };
 
 
