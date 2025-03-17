@@ -18,14 +18,13 @@ pour la configuration et l'utilisation des minutries */
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "enum.h"
 
 #ifndef MINUTERIE0_H
 #define MINUTERIE0_H
 
 
 
-enum  class ModeMinuterie0{CTC, PWM};
+enum class ModeMinuterie0{CTC, PWM};
 class Minuterie0
 {
 public:
@@ -39,6 +38,7 @@ public:
     void ajusterPwm( uint8_t  , uint8_t );
     uint16_t convertirPourcentage(uint16_t  , uint16_t );
     void activerInterruption();
+    void configurationMinuterie0();
     
 private:
     
