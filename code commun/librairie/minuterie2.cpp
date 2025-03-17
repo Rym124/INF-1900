@@ -104,3 +104,13 @@ void Minuterie2::activerInterruption()
     TIMSK2 |= (1 << OCIE2A);
     sei(); 
 }
+
+void Minuterie2::configurerMinuterie2()
+{
+    DDRD |=(1 << PD7)|(1 << PD6)| (1 << PD4) | (1 << PD5);
+}
+
+uint16_t Minuterie2::convertirPourcentage(uint16_t pourcentage, uint16_t valeurMax)
+{
+    return (pourcentage * valeurMax) / CONVERSION;
+}
