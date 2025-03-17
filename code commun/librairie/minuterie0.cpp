@@ -30,12 +30,6 @@ et l'utilisation des minutries */
 
 
 
-
-uint16_t convertirPourcentage(uint16_t pourcentage, uint16_t valeurMax)
-{
-    return (pourcentage * valeurMax) / CONVERSION;
-}
-
 Minuterie0::Minuterie0(ModeMinuterie0 mode, uint16_t valeurCtc, uint16_t prescaler)
     :leMode_(mode), valeurCtc_(valeurCtc)
 {
@@ -106,9 +100,18 @@ void Minuterie0::comparerSortiesRegistres(uint16_t dureeA, uint16_t dureeB)
     OCR0B = dureeB;
 }
 
+uint16_t Minuterie0::convertirPourcentage(uint16_t pourcentage, uint16_t valeurMax)
+{
+    return (pourcentage * valeurMax) / CONVERSION;
+}
+
 void Minuterie0::activerInterruption()
 {
     cli();
     TIMSK0 |= (1 << OCIE0A);
     sei();
+}
+
+void Minuterie0::configurationMinuterie0(){
+    DDRB |=(1 << PB2)|(1 << PB3)| (1 << PB4) | (1 << PB5);
 }
