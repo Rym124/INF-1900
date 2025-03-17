@@ -30,7 +30,6 @@ class Minuterie2
 {
 public:
     
-
     Minuterie2(ModeMinuterie2 mode, uint16_t valeurCtc=0, uint16_t prescaler =0);
 
     void partirCompteur();
@@ -39,7 +38,8 @@ public:
     void comparerSortiesRegistres(uint16_t ,uint16_t ); 
     void ajusterPwm( uint8_t  , uint8_t );
     void activerInterruption();
-    
+    void configurerMinuterie2();
+    uint16_t convertirPourcentage(uint16_t pourcentage, uint16_t valeurMax);
    
 private:
     
