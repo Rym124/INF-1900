@@ -31,13 +31,6 @@ et l'utilisation des minutries */
 
 
 
-
-
-uint16_t convertirPourcentage(uint16_t pourcentage, uint16_t valeurMax)
-{
-    return (pourcentage * valeurMax) / CONVERSION;
-}
-
 Minuterie1::Minuterie1(uint16_t valeurCtc, uint16_t prescaler)
     :  valeurCtc_(valeurCtc)
 {
@@ -62,13 +55,9 @@ uint16_t Minuterie1::choisirPrescaler(uint16_t valeur)
 
 void Minuterie1::partirCompteur()
 { 
-    
-
     TCNT1 = 0;
     OCR1A = valeurCtc_;
     TCCR1B |= (1 << WGM12)| prescaler_; 
-
-    
 }
 
 void Minuterie1::arreterCompteur()
@@ -88,4 +77,9 @@ void Minuterie1::activerInterruption()
     cli();
     TIMSK1 |= (1 << OCIE1A);
     sei(); 
+}
+
+uint16_t Minuterie1::convertirPourcentage(uint16_t pourcentage, uint16_t valeurMax)
+{
+    return (pourcentage * valeurMax) / CONVERSION;
 }
